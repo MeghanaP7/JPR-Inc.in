@@ -70,39 +70,32 @@ courses = sqlalchemy.Table(
     sqlalchemy.Column("updated_date", sqlalchemy.DateTime, nullable=False)
 )
 
-mentees = sqlalchemy.Table(
-    "mentees",
+mentee_info = sqlalchemy.Table(
+    "mentee_info",
     metadata,
-    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True, autoincrement=True),
-    sqlalchemy.Column("mentee_id", sqlalchemy.String(length=50), autoincrement=True),
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True,autoincrement=True),
+    sqlalchemy.Column("mentee_id",sqlalchemy.String(length=50),nullable=True),
     sqlalchemy.Column("first_name", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("middle_name", sqlalchemy.String(length=50), nullable=True),
     sqlalchemy.Column("last_name", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("education", sqlalchemy.String(length=10), nullable=True),
-    sqlalchemy.Column("years_of_experience", sqlalchemy.String(length=50), nullable=True),
-    # sqlalchemy.Column("photo", sqlalchemy.String, nullable=True),
-    # sqlalchemy.Column("gender", sqlalchemy.Enum, nullable=True),
-    sqlalchemy.Column("marital_status", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("comm_addr1", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("comm_addr2", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("comm_addr3", sqlalchemy.String(length=50), nullable=True),
+    sqlalchemy.Column("education", sqlalchemy.String(length=50), nullable=True),
+    sqlalchemy.Column("year_of_experience", sqlalchemy.String(length=50), nullable=True),
+    sqlalchemy.Column("comm_address", sqlalchemy.String(length=255), nullable=True),
+    sqlalchemy.Column("permanent_address", sqlalchemy.String(length=250), nullable=True),
+    sqlalchemy.Column("gender", sqlalchemy.String(length=50), nullable=True),
     sqlalchemy.Column("comm_city", sqlalchemy.String(length=50), nullable=True),
     sqlalchemy.Column("comm_state", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("comm_country", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("comm_mobile", sqlalchemy.String(length=50), nullable=True),
     sqlalchemy.Column("comm_landmark", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("perm_addr1", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("perm_addr2", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("perm_addr3", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("perm_city", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("perm_state", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("perm_country", sqlalchemy.String(length=50), nullable=True),
+    sqlalchemy.Column("comm_mobile", sqlalchemy.String(length=10), nullable=True),
+    sqlalchemy.Column("permanent_city", sqlalchemy.String(length=50), nullable=True),
+    sqlalchemy.Column("permanent_state", sqlalchemy.String(length=50), nullable=True),
+    sqlalchemy.Column("permanent_country", sqlalchemy.String(length=50), nullable=True),
     sqlalchemy.Column("alternate_mobile", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("perm_landmark", sqlalchemy.String(length=50), nullable=True),
-    sqlalchemy.Column("created_date", sqlalchemy.DateTime, nullable=False),
-    sqlalchemy.Column("updated_date", sqlalchemy.DateTime, nullable=False)
-)
+    sqlalchemy.Column("email", sqlalchemy.String(length=100), nullable=True),
+    sqlalchemy.Column("permanent_landmark", sqlalchemy.String(length=100), nullable=True),
+    sqlalchemy.Column("created_date", sqlalchemy.DateTime, nullable=True),
+    sqlalchemy.Column("updated_date", sqlalchemy.DateTime, nullable=True)
 
+)
 course_contents = sqlalchemy.Table(
     "course_contents",
     metadata,

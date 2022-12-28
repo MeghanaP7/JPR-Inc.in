@@ -3,7 +3,7 @@ from db import get_database
 from fastapi import status, HTTPException
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
-from models.post import contact_form, course_category, mentors, courses, mentees
+from models.post import contact_form, course_category, mentors, courses, mentee_info
 from models.post import course_contents, course_mentee
 # from reg import ContactForm, CourseCategory, Mentors, Courses, Mentees
 # from reg import CourseContents, CourseMentee
@@ -72,44 +72,35 @@ class Courses(BaseModel):
     updated_date: datetime
 
 
+class MenteeInfo(BaseModel):
+    id: int
+    mentee_id: str
+    first_name: str
+    last_name: str
+    education: str
+    year_of_experience: str
+    comm_address: str
+    permanent_address: str
+    gender: str
+    comm_city: str
+    comm_state: str
+    comm_landmark: str
+    comm_mobile: str
+    permanent_city: str
+    permanent_state: str
+    permanent_country: str
+    alternate_mobile: str
+    email: EmailStr
+    permanent_landmark: str
+    created_date: datetime
+    updated_date: datetime
+
+
 class CourseContents(BaseModel):
     id: int
     name: str
     duration: str
     course_id: str
-    created_date: datetime
-    updated_date: datetime
-
-
-class Mentees(BaseModel):
-    id: int
-    mentee_id: str
-    first_name: str
-    middle_name: str
-    last_name: str
-    education: str
-    dob: str
-    years_of_experience: str
-    # photo: str
-    # gender: Enum
-    marital_status: bool
-    email: EmailStr
-    comm_addr1: str
-    comm_addr2: str
-    comm_addr3: str
-    comm_city: str
-    comm_state: str
-    comm_country: str
-    comm_mobile: int
-    comm_landmark: str
-    perm_addr1: str
-    perm_addr2: str
-    perm_addr3: str
-    perm_city: str
-    perm_state: str
-    perm_country: str
-    alternate_mobile: int
-    perm_landmark: str
     created_date: datetime
     updated_date: datetime
 
@@ -163,7 +154,7 @@ async def get_contact_form(id: int):
 
 
 @router.post("/course_category", status_code=status.HTTP_201_CREATED)
-async def register(user: CourseCategory):
+async def post_course(user: CourseCategory):
     try:
         db = get_database()
         insert_query = course_category.insert().values(id=user.id,
@@ -200,7 +191,7 @@ async def get_course_category(id: int):
 
 
 @router.post("/mentor_info", status_code=status.HTTP_201_CREATED)
-async def register(user: Mentors):
+async def post_mentor(user: Mentors):
     try:
         db = get_database()
         insert_query = mentors.insert().values(id=user.id,
@@ -259,7 +250,7 @@ async def get_mentor(id: int):
 
 
 @router.post("/courses", status_code=status.HTTP_201_CREATED)
-async def register(user: Courses):
+async def post_course_data(user: Courses):
     try:
         db = get_database()
         insert_query = courses.insert().values(id=user.id,
@@ -295,62 +286,56 @@ async def get_courses(id: int):
         return result
     except Exception as e:
         print(e.args[0])
+        # return result
 
 
-@router.post("/mentees_info", status_code=status.HTTP_201_CREATED)
-async def register(user: Mentees):
+@router.post("/mentee_info", status_code=status.HTTP_201_CREATED)
+async def mentor(user: MenteeInfo):
     try:
         db = get_database()
-        insert_query = mentees.insert().values(id=user.id,
-                                               mentee_id=user.mentee_id,
-                                               first_name=user.first_name,
-                                               middle_name=user.middle_name,
-                                               last_name=user.last_name,
-                                               education=user.education,
-                                               dob=user.dob,
-                                               years_of_experience=user.years_of_experience,
-                                               # photo=user.photo,
-                                               # gender=Gender.,
-                                               marital_status=user.marital_status,
-                                               email=user.email,
-                                               comm_addr1=user.comm_addr1,
-                                               comm_addr2=user.comm_addr2,
-                                               comm_addr3=user.comm_addr3,
-                                               comm_city=user.comm_city,
-                                               comm_state=user.comm_state,
-                                               comm_country=user.comm_country,
-                                               comm_mobile=user.comm_mobile,
-                                               comm_landmark=user.comm_landmark,
-                                               perm_addr1=user.perm_addr1,
-                                               perm_addr2=user.perm_addr2,
-                                               perm_addr3=user.perm_addr3,
-                                               perm_city=user.perm_city,
-                                               perm_state=user.perm_state,
-                                               perm_country=user.perm_country,
-                                               alternate_mobile=user.alternate_mobile,
-                                               perm_landmark=user.perm_landmark,
-                                               created_date=user.created_date,
-                                               updated_date=user.updated_date
-                                               )
+        insert_query = mentee_info.insert().values(
+                                                   id=user.id,
+                                                   mentee_id=user.mentee_id,
+                                                   first_name=user.first_name,
+                                                   last_name=user.last_name,
+                                                   education=user.education,
+                                                   year_of_experience=user.year_of_experience,
+                                                   comm_address=user.comm_address,
+                                                   permanent_address=user.permanent_address,
+                                                   gender=user.gender,
+                                                   comm_city=user.comm_city,
+                                                   comm_state=user.comm_state,
+                                                   comm_mobile=user.comm_mobile,
+                                                   comm_landmark=user.comm_landmark,
+                                                   permanent_city=user.permanent_city,
+                                                   permanent_state=user.permanent_state,
+                                                   permanent_country=user.permanent_country,
+                                                   alternate_mobile=user.alternate_mobile,
+                                                   email=user.email,
+                                                   permanent_landmark=user.permanent_landmark,
+                                                   created_date=user.created_date,
+                                                   updated_date=user.updated_date
+                                                   )
+
         await db.execute(insert_query)
-        # print(insert_query)
+        #print(insert_query)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='enter valid details')
 
 
-@router.get("/mentees_info")
-async def retrieve_mentees():
+@router.get("/mentees_data")
+async def retrieve_mentees_data():
     db = get_database()
-    select_query = mentees.select()
+    select_query = mentee_info.select()
     result = await db.fetch_all(select_query)
     return result
 
 
-@router.get("/mentees_info/{id}")
-async def get_data(id: int):
+@router.get("/mentees_data/{id}")
+async def get_mentees_data(id: int):
     try:
         db = get_database()
-        select_query = mentees.select().where(mentees.c.id == id)
+        select_query = mentee_info.select().where(mentee_info.c.id == id)
         result = await db.fetch_one(select_query)
         if result is None:
             return None
@@ -431,3 +416,4 @@ async def get_course_mentee(id: int):
         return result
     except Exception as e:
         print(e.args[0])
+

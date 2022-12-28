@@ -5,7 +5,6 @@ from models.post import metadata
 from routes.post import router
 
 
-
 app = FastAPI()
 
 
