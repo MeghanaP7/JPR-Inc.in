@@ -5,8 +5,9 @@ from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from models.post import contact_form, course_category, mentors, courses, mentees
 from models.post import course_contents, course_mentee
-# from schemas.post import BaseModel, ContactForm, CourseCategory, Mentors, Courses, Mentees
-# from schemas. post import CourseContents, CourseMentee
+# from reg import ContactForm, CourseCategory, Mentors, Courses, Mentees
+# from reg import CourseContents, CourseMentee
+# from schemas import r
 
 router = APIRouter()
 
@@ -71,6 +72,15 @@ class Courses(BaseModel):
     updated_date: datetime
 
 
+class CourseContents(BaseModel):
+    id: int
+    name: str
+    duration: str
+    course_id: str
+    created_date: datetime
+    updated_date: datetime
+
+
 class Mentees(BaseModel):
     id: int
     mentee_id: str
@@ -100,15 +110,6 @@ class Mentees(BaseModel):
     perm_country: str
     alternate_mobile: int
     perm_landmark: str
-    created_date: datetime
-    updated_date: datetime
-
-
-class CourseContents(BaseModel):
-    id: int
-    name: str
-    duration: str
-    course_id: str
     created_date: datetime
     updated_date: datetime
 
@@ -296,8 +297,8 @@ async def get_courses(id: int):
         print(e.args[0])
 
 
-@router.post("/data", status_code=status.HTTP_201_CREATED)
-async def mentee_info(user: Mentees):
+@router.post("/mentees_info", status_code=status.HTTP_201_CREATED)
+async def register(user: Mentees):
     try:
         db = get_database()
         insert_query = mentees.insert().values(id=user.id,
@@ -337,7 +338,7 @@ async def mentee_info(user: Mentees):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='enter valid details')
 
 
-@router.get("/mentees_data")
+@router.get("/mentees_info")
 async def retrieve_mentees():
     db = get_database()
     select_query = mentees.select()
@@ -345,7 +346,7 @@ async def retrieve_mentees():
     return result
 
 
-@router.get("/mentees_data/{id}")
+@router.get("/mentees_info/{id}")
 async def get_data(id: int):
     try:
         db = get_database()

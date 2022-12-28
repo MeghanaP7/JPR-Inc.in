@@ -1,8 +1,9 @@
-from fastapi import FastAPI
 import sqlalchemy
+from fastapi import FastAPI
 from db import database
 from models.post import metadata
 from routes.post import router
+
 
 
 app = FastAPI()

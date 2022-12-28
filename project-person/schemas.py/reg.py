@@ -71,7 +71,7 @@
 #     updated_date: datetime
 #
 #
-# class MenteesInfo(BaseModel):
+# class Mentees(BaseModel):
 #     id: int
 #     mentee_id: str
 #     first_name: str
